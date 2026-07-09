@@ -46,8 +46,7 @@ Also worth knowing going in:
 
 ```
 .
-├── notebooks/
-│   └── red_cnn_training.ipynb   data loading, model, training, evaluation -- and the full
+├── red_cnn_training.ipynb   data loading, model, training, evaluation -- and the full
 │                                 reasoning behind every decision, in markdown cells next to
 │                                 the code each one explains
 ├── requirements.txt
@@ -61,7 +60,7 @@ attached, using the [`ct-low-dose-reconstruction`](https://www.kaggle.com/datase
 dataset attached to the session. The dataset itself isn't bundled in this repo — check its license on
 the Kaggle page before using it beyond personal experimentation.
 
-1. Open `notebooks/red_cnn_training.ipynb` in a Kaggle Notebook (or locally, with the dataset
+1. Open `red_cnn_training.ipynb` in a Kaggle Notebook (or locally, with the dataset
    downloaded and `ORIG_ROOT` in the notebook pointed at it).
 2. Attach the dataset above, with a GPU accelerator enabled.
 3. Run all cells. `SMOKE_TEST = True` restricts to a tiny subset for a ~1-2 minute sanity check before
