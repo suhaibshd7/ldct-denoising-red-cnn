@@ -3,16 +3,29 @@
 Denoises low-dose ("quarter-dose") CT scans toward normal-dose quality, using RED-CNN (Chen et al.,
 2017) trained on the 2016 NIH-AAPM-Mayo Clinic Low Dose CT Grand Challenge dataset.
 
+Computed tomography relies on ionizing radiation, and cumulative exposure carries a small but real
+long-term risk — the reason radiology practice is guided by the ALARA principle, "as low as reasonably
+achievable." Lowering dose reduces that risk directly, but fewer photons reaching the detector means
+more quantum noise in the reconstructed image, which can undermine the diagnostic quality the scan was
+taken for in the first place. AI-based denoising is one of several active research strategies —
+alongside iterative reconstruction methods already used clinically — aimed at breaking that tradeoff:
+acquire at a lower dose, then computationally restore image quality closer to what a full-dose scan
+would have produced. This project implements that idea end to end, on real clinical data, not as a
+Kaggle exercise disconnected from why the problem exists.
+
 This is an image-domain denoising project, not sinogram/projection-domain reconstruction — see
 "Key design decisions" below for why, along with a summary of every other choice made and rejected.
 Full reasoning for each lives in the notebook itself, next to the code it explains.
 
 ## Results
 
-| | PSNR | SSIM |
+| | PSNR ↑ | SSIM ↑ |
 |---|---|---|
 | Low-dose input (no model) | 17.02 dB | 0.673 |
 | RED-CNN output | 22.27 dB | 0.774 |
+
+*PSNR (peak signal-to-noise ratio): higher means less noise relative to the reference image. SSIM
+(structural similarity): ranges 0-1, closer to 1 means more structurally similar to the reference.*
 
 Measured on a held-out test set (2 patients, 1,136 slices) not seen during training.
 
@@ -47,9 +60,10 @@ Also worth knowing going in:
 ```
 .
 ├── red_cnn_training.ipynb   data loading, model, training, evaluation -- and the full
-│                                 reasoning behind every decision, in markdown cells next to
-│                                 the code each one explains
+│                             reasoning behind every decision, in markdown cells next to
+│                             the code each one explains
 ├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
@@ -90,7 +104,25 @@ that gave a different answer at full scale than it did at reduced scale. All of 
 notebook's "Lessons learned" section rather than smoothed over, since that's a more honest — and more
 useful — record than a notebook that only shows the parts that worked on the first try.
 
-## License
+## Data & ethics
+
+The CT scans used are publicly released, de-identified data from the AAPM/Mayo Clinic Low Dose CT
+Grand Challenge, originally collected under Mayo Clinic IRB approval for public research use. No
+patient-identifiable information is included in this repository or in any notebook output.
+
+## References
+
+- Chen, H., Zhang, Y., Kalra, M.K., Lin, F., Chen, Y., Liao, P., Zhou, J. and Wang, G., 2017. Low-Dose
+  CT With a Residual Encoder-Decoder Convolutional Neural Network. *IEEE Transactions on Medical
+  Imaging*, 36(12), pp.2524-2535. [doi:10.1109/TMI.2017.2715284](https://doi.org/10.1109/TMI.2017.2715284)
+- McCollough, C.H., Bartley, A.C., Carter, R.E., Chen, B., Drees, T.A., Edwards, P., Holmes III, D.R.,
+  Huang, A.E., Khan, F., Leng, S., McMillan, K.L., Michalak, G.J., Nunez, K.M., Yu, L. and Fletcher,
+  J.G., 2017. Low-dose CT for the detection and classification of metastatic liver lesions: Results of
+  the 2016 Low Dose CT Grand Challenge. *Medical Physics*, 44(10), pp.e339-e352.
+  [doi:10.1002/mp.12345](https://doi.org/10.1002/mp.12345)
+- Dataset accessed via Kaggle: [andrewmvd/ct-low-dose-reconstruction](https://www.kaggle.com/datasets/andrewmvd/ct-low-dose-reconstruction)
+
+
 
 Code in this repository is MIT licensed (see [LICENSE](LICENSE)). The CT imaging dataset used here is
 not included and is governed by its own license on Kaggle — check that page before redistributing or
